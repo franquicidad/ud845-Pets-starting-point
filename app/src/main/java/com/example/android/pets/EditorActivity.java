@@ -15,6 +15,8 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +28,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
+import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -52,6 +56,8 @@ public class EditorActivity extends AppCompatActivity {
      */
     private int mGender = 0;
 
+    private PetDbHelper mPetDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,7 @@ public class EditorActivity extends AppCompatActivity {
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
 
         setupSpinner();
+
     }
 
     /**
@@ -105,6 +112,33 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
+    private void insertPet(){
+        String nameString=mNameEditText.getText().toString().trim();
+        String breedString=mBreedEditText.getText().toString().trim();
+        String weightString=mWeightEditText.getText().toString().trim();
+        //This is because the weight is an int first we need to get it as a String them pass it into int.
+        int weight=Integer.parseInt(weightString);
+
+        mPetDbHelper=new PetDbHelper(this);
+        SQLiteDatabase db= mPetDbHelper.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+
+        values.put(PetEntry.COLUMN_PET_NAME,nameString);
+        values.put(PetEntry.COLUMN_PET_BREED,breedString);
+        values.put(PetEntry.COLUMN_PET_GENDER,mGender);
+        values.put(PetEntry.COLUMN_PET_WEIGHT,weight);
+
+        long newRowId=db.insert(PetEntry.TABLE_NAME,null,values);
+
+        if(newRowId== -1){
+            Toast.makeText(this,"Error in Saving the pet",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this,"The pet is been saved succesfully in row"+newRowId,Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -119,7 +153,8 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                insertPet();
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -133,4 +168,6 @@ public class EditorActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
