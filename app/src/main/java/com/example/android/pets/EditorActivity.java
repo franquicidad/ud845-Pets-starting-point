@@ -17,6 +17,7 @@ package com.example.android.pets;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -119,9 +120,6 @@ public class EditorActivity extends AppCompatActivity {
         //This is because the weight is an int first we need to get it as a String them pass it into int.
         int weight=Integer.parseInt(weightString);
 
-        mPetDbHelper=new PetDbHelper(this);
-        SQLiteDatabase db= mPetDbHelper.getWritableDatabase();
-
         ContentValues values= new ContentValues();
 
         values.put(PetEntry.COLUMN_PET_NAME,nameString);
@@ -129,14 +127,13 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_GENDER,mGender);
         values.put(PetEntry.COLUMN_PET_WEIGHT,weight);
 
-        long newRowId=db.insert(PetEntry.TABLE_NAME,null,values);
+        Uri newUri=getContentResolver().insert(PetEntry.CONTENT_URI,values);
 
-        if(newRowId== -1){
-            Toast.makeText(this,"Error in Saving the pet",Toast.LENGTH_LONG).show();
+        if(newUri==null){
+            Toast.makeText(getBaseContext(), R.string.pet_insert_Failed,Toast.LENGTH_LONG).show();
         }else{
-            Toast.makeText(this,"The pet is been saved succesfully in row"+newRowId,Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), R.string.Pet_inserted,Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
