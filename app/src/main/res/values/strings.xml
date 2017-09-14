@@ -60,4 +60,6 @@
     <string name="gender_female">Female</string>
     <string name="pet_insert_Failed">Insertion of the Pet Failed</string>
     <string name="Pet_inserted">Pet Inserted</string>
+    <string name="empty_view_title_text">Its a bit lonely here Zzz...</string>
+    <string name="empty_view_subtitle_text">Add a pet in Home!!</string>
 </resources>

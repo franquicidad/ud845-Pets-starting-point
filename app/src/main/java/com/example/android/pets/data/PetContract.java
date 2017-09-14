@@ -60,6 +60,15 @@ public final class PetContract {
          * Type: INTEGER
          */
         public final static String COLUMN_PET_WEIGHT = "weight";
+        /** DECLARING THE CONSTANT*/
+
+        public static final String CONTENT_AUTHORITY = "com.example.android.pets";
+        /**BASE CONTENT*/
+
+        public static final Uri BASE_CONTENT_URI= Uri.parse("content://"+CONTENT_AUTHORITY);
+        /** PATH TABLE NAME*/
+
+        public static final String PATH_PETS="pets";
 
         /**
          * The MIME type of the {@link #CONTENT_URI} for a list of pets.
@@ -81,15 +90,7 @@ public final class PetContract {
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
 
-        /** DECLARING THE CONSTANT*/
 
-        public static final String CONTENT_AUTHORITY = "com.example.android.pets";
-        /**BASE CONTENT*/
-
-        public static final Uri BASE_CONTENT_URI= Uri.parse("content://"+CONTENT_AUTHORITY);
-        /** PATH TABLE NAME*/
-
-        public static final String PATH_PETS="pets";
 
         /**COMPLETE URI*/
 

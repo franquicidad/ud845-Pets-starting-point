@@ -268,8 +268,8 @@ public class PetProvider extends ContentProvider {
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
 
         }
-        @Override
-        public String getType (Uri uri){
+    }
+        public String getType(Uri uri) {
             final int match = sUriMatcher.match(uri);
             switch (match) {
                 case PETS:
@@ -279,7 +279,6 @@ public class PetProvider extends ContentProvider {
                 default:
                     throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
             }
-
         }
-    }
+
 }
